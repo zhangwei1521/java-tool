@@ -15,9 +15,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class ExcelUtils {
 
@@ -105,4 +110,46 @@ public class ExcelUtils {
         System.out.println("写出Excel结束");
     }
 
+    public static <T> List<T> readFromExcel(InputStream inputStream, Class<T> clazz) throws Exception {
+        Field[] fields = clazz.getDeclaredFields();
+        Map<String,Field> fieldMap = new HashMap<>();
+        for(Field field : fields){
+            fieldMap.put(field.getName(),field);
+        }
+        Workbook workbook = new HSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        Row title = sheet.getRow(0);
+        int columnsCount = title.getPhysicalNumberOfCells();
+        String[] titles = new String[columnsCount];
+        int rowIndex = 0;
+        Row row = null;
+        Cell cell = null;
+        T obj = null;
+        for(Iterator<Row> iterator = sheet.rowIterator(); iterator.hasNext();){
+            row = iterator.next();
+            if(rowIndex++ == 0){
+                continue;
+            }
+            if(row == null){
+                break;
+            }
+            obj = (T)clazz.newInstance();
+            for(int i=0; i < columnsCount; i++){
+                cell = row.getCell(i);
+                Object cellValue = null;
+                if(cell != null){
+                    cellValue = resolve(cell);
+                }
+                String fieldName = titles[i];
+                Field field = fieldMap.get(fieldName);
+                field.set(obj,cellValue);
+            }
+        }
+        return null;
+    }
+
+    private static Object resolve(Cell cell){
+
+        return  null;
+    }
 }
