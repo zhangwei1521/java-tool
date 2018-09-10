@@ -14,8 +14,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -27,13 +27,23 @@ import java.util.Map;
 public class ExcelUtils {
 
     public static void main(String[] args) {
-        try{
+        /*try{
             Student s1 = new Student("12345","tom",21,"art","2018","national-music");
             Student s2 = new Student("12346","jerry",22,"science","2017","phisics");
             List<Student> students = new ArrayList<>();
             students.add(s1);
             students.add(s2);
             writeToExcel(students);
+        } catch (Exception e){
+            e.printStackTrace();
+        }*/
+
+        try{
+            InputStream inputStream = new FileInputStream("e:/zhangweei/files/test.xls");
+            List<Student> list = readFromExcel(inputStream,Student.class);
+            for(Student student : list){
+                System.out.println(student.toString());
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -111,6 +121,7 @@ public class ExcelUtils {
     }
 
     public static <T> List<T> readFromExcel(InputStream inputStream, Class<T> clazz) throws Exception {
+        List<T> resultList = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         Map<String,Field> fieldMap = new HashMap<>();
         for(Field field : fields){
@@ -121,6 +132,9 @@ public class ExcelUtils {
         Row title = sheet.getRow(0);
         int columnsCount = title.getPhysicalNumberOfCells();
         String[] titles = new String[columnsCount];
+        for(int i = 0; i < columnsCount; i++){
+            titles[i] = title.getCell(i).getStringCellValue();
+        }
         int rowIndex = 0;
         Row row = null;
         Cell cell = null;
@@ -137,19 +151,30 @@ public class ExcelUtils {
             for(int i=0; i < columnsCount; i++){
                 cell = row.getCell(i);
                 Object cellValue = null;
-                if(cell != null){
+                /*if(cell != null){
                     cellValue = resolve(cell);
-                }
+                }*/
                 String fieldName = titles[i];
                 Field field = fieldMap.get(fieldName);
-                field.set(obj,cellValue);
+                field.setAccessible(true);
+                if(field.getType().equals(String.class)){
+                    cellValue = cell.getStringCellValue();
+                    field.set(obj,(String)cellValue);
+                }
+                else if(field.getType().equals(Boolean.class)){
+                    cellValue = cell.getBooleanCellValue();
+                    field.set(obj,(Boolean)cellValue);
+                }
+                else if(field.getType().equals(Integer.class)){
+                    cellValue = cell.getStringCellValue();
+                    field.set(obj,Integer.parseInt(cellValue.toString()));
+                }
+                else {
+                    field.set(obj,null);
+                }
             }
+            resultList.add(obj);
         }
-        return null;
-    }
-
-    private static Object resolve(Cell cell){
-
-        return  null;
+        return resultList;
     }
 }
