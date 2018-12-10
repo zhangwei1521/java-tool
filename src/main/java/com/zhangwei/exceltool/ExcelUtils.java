@@ -1,6 +1,5 @@
 package com.zhangwei.exceltool;
 
-import com.zhangwei.entity.Student;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -11,10 +10,10 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -24,10 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ExcelUtils {
 
-    public static void main(String[] args) {
-        /*try{
+    /*public static void main(String[] args) {
+        try{
             Student s1 = new Student("12345","tom",21,"art","2018","national-music");
             Student s2 = new Student("12346","jerry",22,"science","2017","phisics");
             List<Student> students = new ArrayList<>();
@@ -36,7 +36,7 @@ public class ExcelUtils {
             writeToExcel(students);
         } catch (Exception e){
             e.printStackTrace();
-        }*/
+        }
 
         try{
             InputStream inputStream = new FileInputStream("e:/zhangweei/files/test.xls");
@@ -48,7 +48,7 @@ public class ExcelUtils {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public static <T> void writeToExcel(List<T> list) throws Exception {
         Workbook workbook = new HSSFWorkbook();
@@ -102,7 +102,7 @@ public class ExcelUtils {
                 cell = row.createCell(j++);
                 cell.setCellStyle(contentStyle);
                 value = field.get(t);
-                cell.setCellValue(value.toString());
+                cell.setCellValue(value == null ? "" : value.toString());
             }
         }
 
