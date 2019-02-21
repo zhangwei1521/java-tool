@@ -112,7 +112,7 @@ public class NewExcelUtil {
                 if(StringUtils.equals(field.split(";;")[0],"specialReason")){
                     XSSFDataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
                     XSSFDataValidationConstraint dvConstraint = (XSSFDataValidationConstraint) dvHelper.createExplicitListConstraint(specialReasons);
-                    CellRangeAddressList addressList = new CellRangeAddressList(rowIndex, 65535,columnIndex, columnIndex+1);
+                    CellRangeAddressList addressList = new CellRangeAddressList(rowIndex, n+1,columnIndex, columnIndex);
                     XSSFDataValidation validation = (XSSFDataValidation) dvHelper.createValidation(dvConstraint, addressList);
                     sheet.addValidationData(validation);
                 }
