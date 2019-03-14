@@ -35,7 +35,7 @@ public class NewExcelUtil {
             COLNUM_LETTER_MAP.put(i,Character.toChars('A'+i)[0]);
         }
     }
-    public static void exportAchievementTemplate(HttpServletRequest request,HttpServletResponse response, List<Map<String,String>> dataList, List<String> exportColumns, String[] specialReasons) throws IOException{
+    public static void exportExcelTemplate(HttpServletRequest request,HttpServletResponse response, List<Map<String,String>> dataList, List<String> exportColumns, String[] specialReasons) throws IOException{
         response.setContentType("application/force-download");
         response.setCharacterEncoding("UTF-8");
         String fileName = "导出列表";
@@ -49,10 +49,10 @@ public class NewExcelUtil {
         }
         response.setHeader("Content-Disposition", "attachment;fileName=\""+ fileName + ".xlsx\"");
 
-        writeAchievementWorkBook(response , dataList, exportColumns,specialReasons);
+        writeWorkBook(response , dataList, exportColumns,specialReasons);
     }
 
-    private static void writeAchievementWorkBook(HttpServletResponse response, List<Map<String,String>> dataList, List<String> exportColumns,String[] specialReasons) throws IOException {
+    private static void writeWorkBook(HttpServletResponse response, List<Map<String,String>> dataList, List<String> exportColumns,String[] specialReasons) throws IOException {
 
         if (dataList == null || dataList.size() == 0){
             return;
@@ -74,6 +74,8 @@ public class NewExcelUtil {
         firstCell.setCellStyle(cellStyle);
         Row headRow = sheet.createRow(1);
         headRow.setHeight((short) 400);
+        Row subHeadRow = sheet.createRow(2);
+        subHeadRow.setHeight((short)0);
         //设置标题
         int columnIndex = 0;
         for (String field : exportColumns) {
@@ -81,25 +83,38 @@ public class NewExcelUtil {
             String title = field.split(";;")[1];
             Cell cell = headRow.createCell(columnIndex);
             cell.setCellValue(title);
+
+            Cell ncell = subHeadRow.createCell(columnIndex);
+            ncell.setCellValue(field.split(";;")[0]);
             columnIndex++;
         }
 
-        //分项成绩序号-权重map
+        //分项序号-权重map
         Map<Integer,String> achieveItemWeightMap = new HashMap<>();
         for (String field : exportColumns) {
             if(field.startsWith("subItem-")){
-                field.lastIndexOf('(');
                 String weight = field.substring(field.lastIndexOf('(')+1,field.lastIndexOf(')'));
                 achieveItemWeightMap.put(exportColumns.indexOf(field),weight);
             }
         }
 
-        Row row = sheet.createRow(2);
+        Row row = sheet.createRow(3);
         row.setHeight((short)(500));
         Cell cell = null;
-        int rowIndex = 2;
+        int rowIndex = 3;
 
         int n = dataList.size();
+        for (String column : exportColumns) {
+            if (StringUtils.equals(column.split(";;")[0], "specialReason")) {
+                //特殊原因下拉
+                int specialResonColIndex = exportColumns.indexOf(column);
+                XSSFDataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
+                XSSFDataValidationConstraint dvConstraint = (XSSFDataValidationConstraint) dvHelper.createExplicitListConstraint(specialReasons);
+                CellRangeAddressList addressList = new CellRangeAddressList(rowIndex, n + 2, specialResonColIndex, specialResonColIndex);
+                XSSFDataValidation validation = (XSSFDataValidation) dvHelper.createValidation(dvConstraint, addressList);
+                sheet.addValidationData(validation);
+            }
+        }
         for (int i = 0 ; i < n ; i++) {
             row = sheet.createRow(rowIndex);
             columnIndex = 0;
@@ -108,14 +123,6 @@ public class NewExcelUtil {
             Map data = dataList.get(i);
             for (String field : exportColumns) {
                 cell = row.createCell(columnIndex);
-                //特殊原因下拉
-                if(StringUtils.equals(field.split(";;")[0],"specialReason")){
-                    XSSFDataValidationHelper dvHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
-                    XSSFDataValidationConstraint dvConstraint = (XSSFDataValidationConstraint) dvHelper.createExplicitListConstraint(specialReasons);
-                    CellRangeAddressList addressList = new CellRangeAddressList(rowIndex, n+1,columnIndex, columnIndex);
-                    XSSFDataValidation validation = (XSSFDataValidation) dvHelper.createValidation(dvConstraint, addressList);
-                    sheet.addValidationData(validation);
-                }
                 //最终成绩公式
                 if(StringUtils.equals(field.split(";;")[0],"finalAchievement")){
                     StringBuilder funcBuilder = new StringBuilder();
