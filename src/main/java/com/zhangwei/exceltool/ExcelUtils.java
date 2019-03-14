@@ -115,6 +115,9 @@ public class ExcelUtils {
             outputStream.write(buffer, 0, len);
             len = inputStream.read(buffer);
         }
+        outputStream.flush();
+        outputStream.close();
+
         System.out.println("写出Excel结束");
     }
 
