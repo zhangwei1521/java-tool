@@ -7,11 +7,14 @@ import java.nio.charset.StandardCharsets;
 
 public class Demo2 {
     public static void main(String[] args) {
-        URL url = Demo2.class.getClassLoader().getResource("职位申请表.ftl");
-        try {
-            System.out.println(URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8.toString()));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        printClassPath();
+    }
+
+    private static void printClassPath(){
+        String classpath = System.getProperty("java.class.path");
+        String [] arr = classpath.split(";");
+        for(String path : arr){
+            System.out.println(path);
         }
     }
 }
