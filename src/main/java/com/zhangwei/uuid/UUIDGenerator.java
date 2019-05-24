@@ -1,8 +1,5 @@
 package com.zhangwei.uuid;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class UUIDGenerator {
     private final static long twepoch = 1288834974657L;
     /**
