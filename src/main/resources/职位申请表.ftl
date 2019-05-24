@@ -16,8 +16,9 @@
 				<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings" Target="webSettings.xml"/>
 				<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/>
 				<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-				<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>
-				<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml"/>
+				<Relationship Id="rId6" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>
+				<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml"/>
+				<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image1.jpeg"/>
 			</Relationships>
 		</pkg:xmlData>
 	</pkg:part>
@@ -396,7 +397,7 @@
 												<w:rPr>
 													<w:rFonts w:hint="eastAsia"/>
 												</w:rPr>
-												<w:t>${workName}</w:t>
+												<w:t>${item.workName}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
@@ -410,7 +411,7 @@
 												<w:rPr>
 													<w:rFonts w:hint="eastAsia"/>
 												</w:rPr>
-												<w:t>${workTime}</w:t>
+												<w:t>${item.workTime}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
@@ -423,7 +424,7 @@
 												<w:rPr>
 													<w:rFonts w:hint="eastAsia"/>
 												</w:rPr>
-												<w:t>${workSumary}</w:t>
+												<w:t>${item.workSumary}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
@@ -433,7 +434,7 @@
 										</w:tcPr>
 										<w:p w:rsidR="00D41070" w:rsidRDefault="009C52A3" w:rsidP="00EF19C4">
 											<w:r>
-												<w:t>${targetName}</w:t>
+												<w:t>${item.targetName}</w:t>
 											</w:r>											
 										</w:p>
 									</w:tc>
@@ -446,7 +447,7 @@
 												<w:rPr>
 													<w:rFonts w:hint="eastAsia"/>
 												</w:rPr>
-												<w:t>${targetTime}</w:t>
+												<w:t>${item.targetTime}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
@@ -456,13 +457,13 @@
 										</w:tcPr>
 										<w:p w:rsidR="00D41070" w:rsidRDefault="009C52A3" w:rsidP="00EF19C4">
 											<w:r>
-												<w:t>${targetMethod}</w:t>
+												<w:t>${item.targetMethod}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
 								</w:tr>
 							</#list>
-						</#if>						
+						</#if>
 						<w:tr w:rsidR="00D41070" w:rsidTr="003C66DD">
 							<w:trPr>
 								<w:trHeight w:val="567"/>
@@ -510,10 +511,7 @@
 									<w:tcW w:w="6799" w:type="dxa"/>
 									<w:gridSpan w:val="5"/>
 								</w:tcPr>
-								<w:p w:rsidR="00D41070" w:rsidRDefault="00D41070" w:rsidP="00EF19C4">
-									<w:bookmarkStart w:id="0" w:name="_GoBack"/>
-									<w:bookmarkEnd w:id="0"/>
-								</w:p>
+								<w:p w:rsidR="00D41070" w:rsidRDefault="00D41070" w:rsidP="00EF19C4"/>
 							</w:tc>
 							<w:tc>
 								<w:tcPr>
@@ -710,7 +708,73 @@
 							</w:tc>
 						</w:tr>
 					</w:tbl>
-					<w:p w:rsidR="00481051" w:rsidRPr="00D41070" w:rsidRDefault="00CB288E"/>
+					<w:p w:rsidR="00481051" w:rsidRPr="00D41070" w:rsidRDefault="00AC7180">
+						<w:r>
+							<w:rPr>
+								<w:noProof/>
+							</w:rPr>
+							<w:lastRenderedPageBreak/>
+							<w:drawing>
+								<wp:inline distT="0" distB="0" distL="0" distR="0">
+									<wp:extent cx="8248650" cy="3943490"/>
+									<wp:effectExtent l="304800" t="323850" r="323850" b="323850"/>
+									<wp:docPr id="1" name="图片 1"/>
+									<wp:cNvGraphicFramePr>
+										<a:graphicFrameLocks noChangeAspect="1" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"/>
+									</wp:cNvGraphicFramePr>
+									<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+										<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+											<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+												<pic:nvPicPr>
+													<pic:cNvPr id="1" name="town011.jpg"/>
+													<pic:cNvPicPr/>
+												</pic:nvPicPr>
+												<pic:blipFill>
+													<a:blip r:embed="rId4" cstate="print">
+														<a:extLst>
+															<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+																<a14:useLocalDpi val="0" xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"/>
+															</a:ext>
+														</a:extLst>
+													</a:blip>
+													<a:stretch>
+														<a:fillRect/>
+													</a:stretch>
+												</pic:blipFill>
+												<pic:spPr>
+													<a:xfrm>
+														<a:off x="0" y="0"/>
+														<a:ext cx="8273787" cy="3955507"/>
+													</a:xfrm>
+													<a:prstGeom prst="round2DiagRect">
+														<a:avLst>
+															<a:gd name="adj1" fmla="val 16667"/>
+															<a:gd name="adj2" fmla="val 0"/>
+														</a:avLst>
+													</a:prstGeom>
+													<a:ln w="88900" cap="sq">
+														<a:solidFill>
+															<a:srgbClr val="FFFFFF"/>
+														</a:solidFill>
+														<a:miter lim="800000"/>
+													</a:ln>
+													<a:effectLst>
+														<a:outerShdw blurRad="254000" algn="tl" rotWithShape="0">
+															<a:srgbClr val="000000">
+																<a:alpha val="43000"/>
+															</a:srgbClr>
+														</a:outerShdw>
+													</a:effectLst>
+												</pic:spPr>
+											</pic:pic>
+										</a:graphicData>
+									</a:graphic>
+								</wp:inline>
+							</w:drawing>
+						</w:r>
+						<w:bookmarkStart w:id="0" w:name="_GoBack"/>
+						<w:bookmarkEnd w:id="0"/>
+					</w:p>
 					<w:sectPr w:rsidR="00481051" w:rsidRPr="00D41070" w:rsidSect="00D41070">
 						<w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/>
 						<w:pgMar w:top="1800" w:right="1440" w:bottom="1800" w:left="1440" w:header="851" w:footer="992" w:gutter="0"/>
@@ -720,6 +784,9 @@
 				</w:body>
 			</w:document>
 		</pkg:xmlData>
+	</pkg:part>
+	<pkg:part pkg:name="/word/media/image1.jpeg" pkg:contentType="image/jpeg" pkg:compression="store">
+		<pkg:binaryData>${myImage}</pkg:binaryData>
 	</pkg:part>
 	<pkg:part pkg:name="/word/theme/theme1.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.theme+xml">
 		<pkg:xmlData>
@@ -1012,11 +1079,12 @@
 				</w:compat>
 				<w:rsids>
 					<w:rsidRoot w:val="00D41070"/>
+					<w:rsid w:val="003C6649"/>
 					<w:rsid w:val="003C66DD"/>
 					<w:rsid w:val="00797DDC"/>
 					<w:rsid w:val="009C52A3"/>
 					<w:rsid w:val="00A077E5"/>
-					<w:rsid w:val="00CB288E"/>
+					<w:rsid w:val="00AC7180"/>
 					<w:rsid w:val="00D41070"/>
 					<w:rsid w:val="00F7760E"/>
 				</w:rsids>
@@ -1048,69 +1116,12 @@
 			</w:settings>
 		</pkg:xmlData>
 	</pkg:part>
-	<pkg:part pkg:name="/word/fontTable.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml">
-		<pkg:xmlData>
-			<w:fonts mc:Ignorable="w14 w15" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml">
-				<w:font w:name="Calibri">
-					<w:panose1 w:val="020F0502020204030204"/>
-					<w:charset w:val="00"/>
-					<w:family w:val="swiss"/>
-					<w:pitch w:val="variable"/>
-					<w:sig w:usb0="E00002FF" w:usb1="4000ACFF" w:usb2="00000001" w:usb3="00000000" w:csb0="0000019F" w:csb1="00000000"/>
-				</w:font>
-				<w:font w:name="宋体">
-					<w:altName w:val="SimSun"/>
-					<w:panose1 w:val="02010600030101010101"/>
-					<w:charset w:val="86"/>
-					<w:family w:val="auto"/>
-					<w:pitch w:val="variable"/>
-					<w:sig w:usb0="00000003" w:usb1="288F0000" w:usb2="00000016" w:usb3="00000000" w:csb0="00040001" w:csb1="00000000"/>
-				</w:font>
-				<w:font w:name="Times New Roman">
-					<w:panose1 w:val="02020603050405020304"/>
-					<w:charset w:val="00"/>
-					<w:family w:val="roman"/>
-					<w:pitch w:val="variable"/>
-					<w:sig w:usb0="E0002EFF" w:usb1="C0007843" w:usb2="00000009" w:usb3="00000000" w:csb0="000001FF" w:csb1="00000000"/>
-				</w:font>
-				<w:font w:name="Calibri Light">
-					<w:panose1 w:val="020F0302020204030204"/>
-					<w:charset w:val="00"/>
-					<w:family w:val="swiss"/>
-					<w:pitch w:val="variable"/>
-					<w:sig w:usb0="A00002EF" w:usb1="4000207B" w:usb2="00000000" w:usb3="00000000" w:csb0="0000019F" w:csb1="00000000"/>
-				</w:font>
-			</w:fonts>
-		</pkg:xmlData>
-	</pkg:part>
 	<pkg:part pkg:name="/word/webSettings.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml">
 		<pkg:xmlData>
 			<w:webSettings mc:Ignorable="w14 w15" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml">
 				<w:optimizeForBrowser/>
 				<w:allowPNG/>
 			</w:webSettings>
-		</pkg:xmlData>
-	</pkg:part>
-	<pkg:part pkg:name="/docProps/app.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" pkg:padding="256">
-		<pkg:xmlData>
-			<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
-				<Template>Normal.dotm</Template>
-				<TotalTime>0</TotalTime>
-				<Pages>1</Pages>
-				<Words>36</Words>
-				<Characters>206</Characters>
-				<Application>Microsoft Office Word</Application>
-				<DocSecurity>0</DocSecurity>
-				<Lines>1</Lines>
-				<Paragraphs>1</Paragraphs>
-				<ScaleCrop>false</ScaleCrop>
-				<Company/>
-				<LinksUpToDate>false</LinksUpToDate>
-				<CharactersWithSpaces>241</CharactersWithSpaces>
-				<SharedDoc>false</SharedDoc>
-				<HyperlinksChanged>false</HyperlinksChanged>
-				<AppVersion>15.0000</AppVersion>
-			</Properties>
 		</pkg:xmlData>
 	</pkg:part>
 	<pkg:part pkg:name="/docProps/core.xml" pkg:contentType="application/vnd.openxmlformats-package.core-properties+xml" pkg:padding="256">
@@ -1123,8 +1134,8 @@
 				<dc:description/>
 				<cp:lastModifiedBy>admin</cp:lastModifiedBy>
 				<cp:revision>2</cp:revision>
-				<dcterms:created xsi:type="dcterms:W3CDTF">2019-05-24T05:08:00Z</dcterms:created>
-				<dcterms:modified xsi:type="dcterms:W3CDTF">2019-05-24T05:08:00Z</dcterms:modified>
+				<dcterms:created xsi:type="dcterms:W3CDTF">2019-05-24T07:37:00Z</dcterms:created>
+				<dcterms:modified xsi:type="dcterms:W3CDTF">2019-05-24T07:37:00Z</dcterms:modified>
 			</cp:coreProperties>
 		</pkg:xmlData>
 	</pkg:part>
@@ -1553,6 +1564,63 @@
 					<w:unhideWhenUsed/>
 				</w:style>
 			</w:styles>
+		</pkg:xmlData>
+	</pkg:part>
+	<pkg:part pkg:name="/word/fontTable.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml">
+		<pkg:xmlData>
+			<w:fonts mc:Ignorable="w14 w15" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml">
+				<w:font w:name="Calibri">
+					<w:panose1 w:val="020F0502020204030204"/>
+					<w:charset w:val="00"/>
+					<w:family w:val="swiss"/>
+					<w:pitch w:val="variable"/>
+					<w:sig w:usb0="E00002FF" w:usb1="4000ACFF" w:usb2="00000001" w:usb3="00000000" w:csb0="0000019F" w:csb1="00000000"/>
+				</w:font>
+				<w:font w:name="宋体">
+					<w:altName w:val="SimSun"/>
+					<w:panose1 w:val="02010600030101010101"/>
+					<w:charset w:val="86"/>
+					<w:family w:val="auto"/>
+					<w:pitch w:val="variable"/>
+					<w:sig w:usb0="00000003" w:usb1="288F0000" w:usb2="00000016" w:usb3="00000000" w:csb0="00040001" w:csb1="00000000"/>
+				</w:font>
+				<w:font w:name="Times New Roman">
+					<w:panose1 w:val="02020603050405020304"/>
+					<w:charset w:val="00"/>
+					<w:family w:val="roman"/>
+					<w:pitch w:val="variable"/>
+					<w:sig w:usb0="E0002EFF" w:usb1="C0007843" w:usb2="00000009" w:usb3="00000000" w:csb0="000001FF" w:csb1="00000000"/>
+				</w:font>
+				<w:font w:name="Calibri Light">
+					<w:panose1 w:val="020F0302020204030204"/>
+					<w:charset w:val="00"/>
+					<w:family w:val="swiss"/>
+					<w:pitch w:val="variable"/>
+					<w:sig w:usb0="A00002EF" w:usb1="4000207B" w:usb2="00000000" w:usb3="00000000" w:csb0="0000019F" w:csb1="00000000"/>
+				</w:font>
+			</w:fonts>
+		</pkg:xmlData>
+	</pkg:part>
+	<pkg:part pkg:name="/docProps/app.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" pkg:padding="256">
+		<pkg:xmlData>
+			<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+				<Template>Normal.dotm</Template>
+				<TotalTime>0</TotalTime>
+				<Pages>2</Pages>
+				<Words>36</Words>
+				<Characters>207</Characters>
+				<Application>Microsoft Office Word</Application>
+				<DocSecurity>0</DocSecurity>
+				<Lines>1</Lines>
+				<Paragraphs>1</Paragraphs>
+				<ScaleCrop>false</ScaleCrop>
+				<Company/>
+				<LinksUpToDate>false</LinksUpToDate>
+				<CharactersWithSpaces>242</CharactersWithSpaces>
+				<SharedDoc>false</SharedDoc>
+				<HyperlinksChanged>false</HyperlinksChanged>
+				<AppVersion>15.0000</AppVersion>
+			</Properties>
 		</pkg:xmlData>
 	</pkg:part>
 </pkg:package>

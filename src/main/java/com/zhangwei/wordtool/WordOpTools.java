@@ -6,13 +6,16 @@ import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
+import sun.misc.BASE64Encoder;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -26,11 +29,11 @@ public class WordOpTools {
 
     private static void writeToWord(){
         Map<String,Object> dataMap = new HashMap<>();
-        dataMap.put("name","");
-        dataMap.put("applyMajor","");
-        dataMap.put("nowMajor","");
-        dataMap.put("phoneNum","");
-        dataMap.put("emailAddress","");
+        dataMap.put("name","张三");
+        dataMap.put("applyMajor","测试");
+        dataMap.put("nowMajor","开发");
+        dataMap.put("phoneNum","4568521348");
+        dataMap.put("emailAddress","789564@163.com");
         dataMap.put("workExperienceList",new ArrayList<>());
         for(int i=1;i<3;i++){
             ArrayList list = (ArrayList)dataMap.get("workExperienceList");
@@ -44,6 +47,15 @@ public class WordOpTools {
             list.add(item);
         }
 
+        try(InputStream imageInputStream = WordOpTools.class.getClassLoader().getResourceAsStream("bridge.jpg");) {
+            byte[] imgData = new byte[imageInputStream.available()];
+            imageInputStream.read(imgData);
+            BASE64Encoder encoder = new BASE64Encoder();
+            dataMap.put("myImage",encoder.encode(imgData));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Configuration config = new Configuration();
         config.setDefaultEncoding(StandardCharsets.UTF_8.toString());
 
@@ -51,6 +63,9 @@ public class WordOpTools {
         try(OutputStream fout = Files.newOutputStream(file.toPath());
             Writer writer = new BufferedWriter(new OutputStreamWriter(fout));
         ) {
+            //Template template = config.getTemplate("职位申请表.ftl",StandardCharsets.UTF_8.toString());
+            URL url = Thread.currentThread().getClass().getResource("/");
+            config.setDirectoryForTemplateLoading(new File(url.getFile().substring(1)));
             Template template = config.getTemplate("职位申请表.ftl",StandardCharsets.UTF_8.toString());
             template.process(dataMap,writer);
         } catch (MalformedTemplateNameException e) {
