@@ -1,10 +1,9 @@
 package com.zhangwei.exceltool;
 
-import com.zhangwei.entity.Student;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -14,12 +13,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,57 +38,88 @@ public class ExcelUtils {
     }
 
     private static void testStyle(){
+        //列名数组
+        String[] columns = new String[10];
+        for(int i=0;i<10;i++){
+            columns[i] = "列"+(i+1);
+        }
+
         // 创建工作簿
         Workbook wb = new XSSFWorkbook();
 
         // 创建一个工作表sheet
         Sheet sheet = wb.createSheet("测试样式");
 
-        //首行
+        //标题行
         Row row = sheet.createRow(1);
-        row.setHeight((short) 606);
+        //行高 1000--66像素
+        row.setHeight((short) 1000);
+
+        //标题单元格
         Cell cell = row.createCell(0);
-        cell.setCellValue("学院（系）    届毕业班学生审查情况报告表");
-        cell.setCellStyle(createCellStyle(wb));
-        XSSFFont font = createFont(wb);
-        font.setFontHeightInPoints((short)14);
-        font.setBold(true);
-        cell.getCellStyle().setFont(font);
-        for(int i=1;i<10;i++){
+        cell.setCellValue("这是标题");
+
+        //标题单元格样式
+        XSSFCellStyle cellStyle = ((XSSFWorkbook) wb).createCellStyle();
+        cell.setCellStyle(cellStyle);
+        setBorderForCell(cell);
+        setAlignmentForCell(cell,"center","center");
+        setWrapText(cell,true);
+
+        //标题单元格字体
+        cellStyle.setFont(((XSSFWorkbook) wb).createFont());
+        setFontForCell(cell,"宋体",16,true,Color.RED);
+
+        //因为标题单元格需要合并单元格，并且设置了边框，所以需要先创建这些被合并的单元格
+        for(int i=1;i<columns.length;i++){
             cell = row.createCell(i);
-            cell.setCellValue("");
-            cell.setCellStyle(createCellStyle(wb));
+            CellStyle style = wb.createCellStyle();
+            cell.setCellStyle(style);
+            setBorderForCell(cell);
         }
-        sheet.addMergedRegion(new CellRangeAddress(1,1,0,9));
+        //合并单元格
+        sheet.addMergedRegion(new CellRangeAddress(1,1,0,columns.length-1));
 
+        //列名行
         row = sheet.createRow(2);
-        row.setHeight((short) 606);
+        row.setHeight((short) 600);
 
-        String[] columns = {"序号","名称","总人数","合格人数","待确定人数","淘汰人数","继续人数","认证人数","未认证人数","备注"};
-        double[] widths = {3.57, 21.57, 12.43, 15.57, 11.14, 11.14, 11.14, 22.71, 22.71, 8.71};
+        //列宽
+        double[] widths = {3, 3.5, 4, 5, 7.5, 10.5, 14, 18, 22.5, 27.5};
+        String[] fonts = {"宋体","仿宋","新宋体","黑体","楷体","微软雅黑","微软雅黑 Light","Cambria","Candara","Courier New"};
         for(int i=0;i<columns.length;i++){
             cell = row.createCell(i);
             cell.setCellValue(columns[i]);
 
-            cell.setCellStyle(createCellStyle(wb));
-            font = createFont(wb);
-            font.setFontHeightInPoints((short)9);
-            font.setBold(true);
-            cell.getCellStyle().setFont(font);
+            XSSFCellStyle style = ((XSSFWorkbook)wb).createCellStyle();
+            cell.setCellStyle(style);
+            setBorderForCell(cell);
+            setAlignmentForCell(cell,"center","center");
+
+            style.setFont(((XSSFWorkbook) wb).createFont());
+            //这里设置颜色为黑色，但是实际写出的文档中字体却显示白色，设置WHITE实际却是黑色
+            setFontForCell(cell,fonts[i],6+i,true,Color.WHITE);
+
             sheet.setColumnWidth(i,(int)(widths[i]*256));
         }
+
+        //数据行
         row = sheet.createRow(3);
-        row.setHeight((short) 606);
+        row.setHeight((short) 800);
         for(int i=0;i<columns.length;i++) {
             cell = row.createCell(i);
             cell.setCellValue("xxxx");
             if(i==0){
                 cell.setCellValue(i+1);
             }
-            cell.setCellStyle(createCellStyle(wb));
-            font = createFont(wb);
-            font.setFontHeightInPoints((short)9);
-            cell.getCellStyle().setFont(font);
+            XSSFCellStyle style = ((XSSFWorkbook)wb).createCellStyle();
+            cell.setCellStyle(style);
+            setBorderForCell(cell);
+            setAlignmentForCell(cell,"center","center");
+            setWrapText(cell,true);
+
+            style.setFont(((XSSFWorkbook) wb).createFont());
+            setFontForCell(cell,fonts[i],15-i,false, Color.CYAN);
         }
 
         try {
@@ -112,43 +143,61 @@ public class ExcelUtils {
         System.out.println("写出Excel结束");
     }
 
-    private static XSSFCellStyle createCellStyle(Workbook wb){
-        XSSFCellStyle cellStyle = ((XSSFWorkbook) wb).createCellStyle();
-        cellStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-        cellStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
-        cellStyle.setWrapText(true);
+    private static void setBorderForCell(Cell cell){
+        checkCellAndCellStyle(cell);
+        XSSFCellStyle cellStyle = (XSSFCellStyle)cell.getCellStyle();
         cellStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
         cellStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
         cellStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-        return cellStyle;
+        cellStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+        cell.setCellStyle(cellStyle);
     }
 
-    private static XSSFFont createFont(Workbook wb){
-        XSSFFont font = ((XSSFWorkbook) wb).createFont();
-        font.setFontName("宋体");
-        return font;
-    }
-
-    private static void testWrite(){
-        try{
-            Student s1 = new Student("12345","tom",21,"art","2018","national-music");
-            Student s2 = new Student("12346","jerry",22,"science","2017","phisics");
-            List<Student> students = new ArrayList<>();
-            students.add(s1);
-            students.add(s2);
-            writeToExcel(students);
-        } catch (Exception e){
-            e.printStackTrace();
+    private static void setAlignmentForCell(Cell cell, String horizontal, String vertical){
+        checkCellAndCellStyle(cell);
+        XSSFCellStyle cellStyle = (XSSFCellStyle)cell.getCellStyle();
+        if(StringUtils.equals(horizontal,"left")){
+            cellStyle.setAlignment(XSSFCellStyle.ALIGN_LEFT);
         }
+        if(StringUtils.equals(horizontal,"center")){
+            cellStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        }
+        if(StringUtils.equals(horizontal,"right")){
+            cellStyle.setAlignment(XSSFCellStyle.ALIGN_RIGHT);
+        }
+        if(StringUtils.equals(vertical,"top")){
+            cellStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_TOP);
+        }
+        if(StringUtils.equals(vertical,"center")){
+            cellStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+        }
+        if(StringUtils.equals(vertical,"bottom")){
+            cellStyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_BOTTOM);
+        }
+    }
 
-        try{
-            InputStream inputStream = new FileInputStream("e:/zhangweei/files/test.xls");
-            List<Student> list = readFromExcel(inputStream,Student.class);
-            for(Student student : list){
-                System.out.println(student.toString());
-            }
-        } catch (Exception e){
-            e.printStackTrace();
+    private static void setWrapText(Cell cell, boolean wrapSign){
+        checkCellAndCellStyle(cell);
+        XSSFCellStyle cellStyle = (XSSFCellStyle)cell.getCellStyle();
+        cellStyle.setWrapText(true);
+    }
+
+    private static void setFontForCell(Cell cell,String fontName,int fontSize,boolean boldSign,Color color){
+        checkCellAndCellStyle(cell);
+        XSSFCellStyle cellStyle = (XSSFCellStyle)cell.getCellStyle();
+        XSSFFont font = cellStyle.getFont();
+        if(font != null && StringUtils.isNoneEmpty(fontName)){
+            font.setFontName(fontName);
+        }
+        font.setFontHeightInPoints((short)fontSize);
+        font.setBold(boldSign);
+        byte [] colors = {(byte)color.getRed(),(byte)color.getGreen(),(byte)color.getBlue()};
+        font.setColor(new XSSFColor(colors));
+    }
+
+    private static void checkCellAndCellStyle(Cell cell){
+        if(null == cell || null == cell.getCellStyle()){
+            throw new RuntimeException("参数不能为空");
         }
     }
 
@@ -213,7 +262,7 @@ public class ExcelUtils {
         byte[] bytesArray = byteArrayOutputStream.toByteArray();
         byte[] buffer = new byte[1024];
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytesArray);
-        FileOutputStream outputStream = new FileOutputStream("e:/zhangweei/files/test.xls");
+        FileOutputStream outputStream = new FileOutputStream("e:/tem_file/test.xls");
         int len = inputStream.read(buffer);
         while (len != -1) {
             outputStream.write(buffer, 0, len);
