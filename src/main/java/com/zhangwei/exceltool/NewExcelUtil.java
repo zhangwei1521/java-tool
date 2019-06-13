@@ -79,6 +79,7 @@ public class NewExcelUtil {
         //设置标题
         int columnIndex = 0;
         for (String field : exportColumns) {
+
             sheet.setColumnWidth(columnIndex,5120);
             String title = field.split(";;")[1];
             Cell cell = headRow.createCell(columnIndex);
