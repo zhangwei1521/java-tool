@@ -7,6 +7,8 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.RectangleReadOnly;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -26,7 +28,8 @@ public class PDFOpTools {
 
 
     public static void main(String[] args) {
-        writeTablePDF();
+        writeNewPDF();
+        //writeTablePDF();
     }
 
     private static void writeSimplePDF(){
@@ -35,6 +38,48 @@ public class PDFOpTools {
             PdfWriter pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("/tem_file/simplepdf.pdf"));
             document.open();
             document.add(new Paragraph("hello world"));
+            document.close();
+            pdfWriter.close();
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeNewPDF(){
+        Font cnFont = getChineseFont(14);
+
+        Rectangle pageSize = new RectangleReadOnly(500,300);
+        Document document = new Document(pageSize,18,18,30,18);
+        try {
+            PdfWriter pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("/tem_file/newpdf.pdf"));
+            document.open();
+            Paragraph parag1 = new Paragraph("请假确认函",getChineseFont(16));
+            parag1.setAlignment(Element.ALIGN_CENTER);
+            document.add(parag1);
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph parag2 = new Paragraph("xx部xx员工（工号：xx）：",cnFont);
+            parag2.setAlignment(Element.ALIGN_LEFT);
+            document.add(parag2);
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph parag3 = new Paragraph("经研究，同意你因事请假xxx天（自xx年xx月xx日至xx年xx月xx日止）。",cnFont);
+            parag3.setFirstLineIndent(28);
+            parag3.setAlignment(Element.ALIGN_LEFT);
+            document.add(parag3);
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph parag4 = new Paragraph("xx部",cnFont);
+            parag4.setAlignment(Element.ALIGN_RIGHT);
+            document.add(parag4);
+
+            Paragraph parag5 = new Paragraph("xx年xx月xx日",cnFont);
+            parag5.setAlignment(Element.ALIGN_RIGHT);
+            document.add(parag5);
+
             document.close();
             pdfWriter.close();
         } catch (DocumentException | FileNotFoundException e) {
