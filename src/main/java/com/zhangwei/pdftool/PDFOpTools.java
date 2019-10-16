@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.zhangwei.entity.Student;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,9 +29,11 @@ public class PDFOpTools {
 
 
     public static void main(String[] args) {
-        writeNewPDF();
+        //writeNewPDF();
         //writeTablePDF();
+        writeNewTable(new Student());
     }
+
 
     private static void writeSimplePDF(){
         Document document = new Document();
@@ -51,7 +54,7 @@ public class PDFOpTools {
         Rectangle pageSize = new RectangleReadOnly(500,300);
         Document document = new Document(pageSize,18,18,30,18);
         try {
-            PdfWriter pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("/tem_file/newpdf.pdf"));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("/tem_file/请假确认函.pdf"));
             document.open();
             Paragraph parag1 = new Paragraph("请假确认函",getChineseFont(16));
             parag1.setAlignment(Element.ALIGN_CENTER);
@@ -87,6 +90,258 @@ public class PDFOpTools {
         }
     }
 
+    private static void writeNewTable(Student student){
+        try {
+            Document document = new Document(PageSize.A4);
+            PdfWriter pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("/tem_file/ApplyTable.pdf"));
+            document.setMargins(30, 30, 20, 20);
+            document.open();
+
+            final PdfPTable table = new PdfPTable(4);
+            table.setHeaderRows(3);
+            //table.setFooterRows(1);
+            table.setWidthPercentage(100);
+            table.setTotalWidth(120);
+            table.setWidths(new float[]{30,30,32,30});
+
+            int fontSize1 = 16;
+            int fontSize2 = 12;
+            float borderSize = 0.5f;
+            int titleHeight = 30;
+            //int lineHeight = 20;
+
+            PdfPCell cell = createPdfPCell("xxxxxxxxxxxxxxxx申请表",fontSize1,4,3);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBorder(0);
+            cell.setFixedHeight(titleHeight);
+            table.addCell(cell);
+
+
+            cell = createPdfPCell("申请xxxxxxx",fontSize2,1,1);
+            cell.setFixedHeight(0.0f);
+            cell.setBorderWidthTop(borderSize);
+
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthTop(borderSize);
+            table.addCell(cell);
+            cell = createPdfPCell("xxxxxxx归属单位",fontSize2,1,1);
+            cell.setBorderWidthTop(borderSize);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthTop(borderSize);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("工号",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("姓名",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("原职位",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("原单位",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("工龄",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("大区",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("联系电话\n",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("联系邮箱\n",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("原职称\n",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("申请岗位职称\n",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("原岗位工作情况",fontSize2,4,1);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("工作成果",fontSize2,2,1);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+            cell = createPdfPCell("绩效考核",fontSize2,2,1);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("同事A",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(null==null?"":null,fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("同事B",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("经理A",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("经理B",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            //---
+            cell = createPdfPCell("主任A",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("主任B",fontSize2,1,1);
+            cell.setFixedHeight(0.0f);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("客户A",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("客户B",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("单位综合",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell("客户综合",fontSize2,1,1);
+            cell.setFixedHeight(0.0f);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,1,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("其他情况",fontSize2,4,1);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            //===
+            cell = createPdfPCell("其他情况A",fontSize2,1,3);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = createPdfPCell("请假",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,2,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("加班",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,2,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("奖励",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,2,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            //===
+            cell = createPdfPCell("其他情况B",fontSize2,1,2);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = createPdfPCell("迟到",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,2,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("早退",fontSize2,1,1);
+            table.addCell(cell);
+            cell = createPdfPCell(student.getStuNum(),fontSize2,2,1);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("上级经理意见：",fontSize2,4,1);
+            cell.setFixedHeight(60);
+            cell.setVerticalAlignment(Element.ALIGN_TOP);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+            cell = createPdfPCell("部门经理意见：",fontSize2,4,1);
+            cell.setFixedHeight(60);
+            cell.setVerticalAlignment(Element.ALIGN_TOP);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+            cell = createPdfPCell("部门负责人意见：",fontSize2,4,1);
+            cell.setFixedHeight(60);
+            cell.setVerticalAlignment(Element.ALIGN_TOP);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+            cell = createPdfPCell("公司总经理意见：",fontSize2,4,1);
+            cell.setFixedHeight(60);
+            cell.setVerticalAlignment(Element.ALIGN_TOP);
+            cell.setBorderWidthRight(borderSize);
+            table.addCell(cell);
+
+            cell = createPdfPCell("说明：1）附本人工作考勤一份；",fontSize2,4,1);
+            cell.setBorder(0);
+            table.addCell(cell);
+            cell = createPdfPCell("2）xxxxxxx不能和xxxxxxx相同。如果xxxxxxxx，“xxxxxxxxxxx”这部分可以不显示。如果xxxxx，就xxxxx",fontSize2,4,1);
+            cell.setBorder(0);
+            cell.setFixedHeight(0.0f);
+            cell.setLeading(0.0f,1.5f);
+            cell.setIndent(36);
+            table.addCell(cell);
+
+            cell = createPdfPCell("年     月     日填",fontSize2,4,1);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setBorder(0);
+            table.addCell(cell);
+
+            cell = createPdfPCell("\n",fontSize2,4,3);
+            cell.setBorder(0);
+            table.addCell(cell);
+
+            document.add(table);
+            document.close();
+            pdfWriter.close();
+            System.out.println("导出PDF成功");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     private static void writeTablePDF(){
         String grade = "二零一八";
         String companyName = "xxx公司";
@@ -173,8 +428,11 @@ public class PDFOpTools {
         pdfPCell.setColspan(colSpan);
         pdfPCell.setRowspan(rowSpan);
         pdfPCell.setPhrase(createParagraph(text,fontSize));
-        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
         pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        pdfPCell.setBorderWidthTop(0);
+        pdfPCell.setBorderWidthRight(0);
+        pdfPCell.setFixedHeight(20);
         return pdfPCell;
     }
 

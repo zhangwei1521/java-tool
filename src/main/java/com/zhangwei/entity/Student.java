@@ -1,5 +1,10 @@
 package com.zhangwei.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Student {
     private String stuNum;
     private String name;
