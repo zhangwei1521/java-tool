@@ -30,8 +30,8 @@ public class PDFOpTools {
 
     public static void main(String[] args) {
         //writeNewPDF();
-        //writeTablePDF();
-        writeNewTable(new Student());
+        writeTablePDF();
+        //writeNewTable(new Student());
     }
 
 
@@ -373,6 +373,9 @@ public class PDFOpTools {
             pdfWriter.setPageEvent(pageEventHelper);
             document.setMargins(30, 45, 20, 30);
             document.open();
+
+            document.add(new Paragraph("xxxxxxxxxxxxxxxx"));
+            document.newPage();
 
             final PdfPTable table = new PdfPTable(10);
             table.setHeaderRows(4);
