@@ -1,9 +1,4 @@
-package com.zhangwei.demo;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+package com.zhangwei.test;
 
 public class Demo2 {
     public static void main(String[] args) {
