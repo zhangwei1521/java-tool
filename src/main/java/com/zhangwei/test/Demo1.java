@@ -63,7 +63,11 @@ public class Demo1 {
         dateList.add(date1);
         dateList.add(date2);
         dateList.add(date3);
-        dateList.sort((a,b)->a.compareTo(b));
+        dateList.sort((a,b)->b.compareTo(a));
+        System.out.println(dateList);
+        //索引越界抛出异常：IndexOutOfBoundsException
+        //System.out.println(dateList.get(3));
+        dateList.remove(0);
         System.out.println(dateList);
     }
 }
