@@ -2,10 +2,16 @@ package com.zhangwei.test;
 
 import com.zhangwei.uuid.UUIDGenerator;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class Demo1 {
     public static void main(String[] args) {
-       //test01();
-       test02();
+        //test01();
+        //test02();
+        //test03();
+        test04();
     }
 
     //测试UUIDGenerator
@@ -37,5 +43,27 @@ public class Demo1 {
         System.out.println(o+" : "+Integer.toBinaryString(o));
         int p = o << 6;
         System.out.println(p+" : "+Integer.toBinaryString(p));
+    }
+
+    //打印classpath
+    private static void test03(){
+        String classpath = System.getProperty("java.class.path");
+        String [] arr = classpath.split(";");
+        for(String path : arr){
+            System.out.println(path);
+        }
+    }
+
+    //测试List排序
+    private static void test04(){
+        List<Date> dateList = new ArrayList<>();
+        Date date1 = new Date(119,11,10,13,56,59);
+        Date date2 = new Date(119,11,9,13,56,59);
+        Date date3 = new Date(119,11,11,13,56,59);
+        dateList.add(date1);
+        dateList.add(date2);
+        dateList.add(date3);
+        dateList.sort((a,b)->a.compareTo(b));
+        System.out.println(dateList);
     }
 }
