@@ -2,16 +2,21 @@ package com.zhangwei.test;
 
 import com.zhangwei.uuid.UUIDGenerator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Demo1 {
     public static void main(String[] args) {
         //test01();
         //test02();
         //test03();
-        test04();
+        //test04();
+        //test05();
+        test06();
     }
 
     //测试UUIDGenerator
@@ -69,5 +74,25 @@ public class Demo1 {
         //System.out.println(dateList.get(3));
         dateList.remove(0);
         System.out.println(dateList);
+    }
+
+    //测试日期格式化
+    private static void test05(){
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+        String nowStr = format.format(now);
+        System.out.println(nowStr);
+    }
+
+    //测试String
+    private static void test06(){
+        Map<String,Object> alarmResultNameMap = new HashMap<>();
+        alarmResultNameMap.put("I级","1");
+        alarmResultNameMap.put("II级","2");
+        alarmResultNameMap.put("III级","3");
+        alarmResultNameMap.put("Ⅳ级","4");
+        alarmResultNameMap.put("V级","5");
+        String s = new String("I级");
+        System.out.println(alarmResultNameMap.get(s));
     }
 }
