@@ -10,11 +10,14 @@ import freemarker.template.TemplateNotFoundException;
 import sun.misc.BASE64Encoder;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -22,18 +25,96 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 public class WordOpTools {
     public static void main(String[] args) {
         //writeToWord();
-        dynamicWrite();
-        newDynamic();
+        //dynamicWrite();
+        //newDynamic();
+        writeDocx();
+    }
+
+    private static void writeDocx(){
+        Map<String,Object> dataMap = prepareData();
+
+        try(
+                StringWriter writer = new StringWriter();
+                FileOutputStream docxOut = new FileOutputStream("dynamicWord.docx");
+                ZipOutputStream zipout = new ZipOutputStream(docxOut);
+            )
+        {
+            Configuration config = new Configuration(Configuration.VERSION_2_3_28);
+            config.setDefaultEncoding(StandardCharsets.UTF_8.toString());
+            URL url = Thread.currentThread().getClass().getResource("/");
+            config.setDirectoryForTemplateLoading(new File(url.getFile().substring(1)));
+
+            Template template = config.getTemplate("document.ftl",StandardCharsets.UTF_8.toString());
+            template.process(dataMap,writer);
+
+            ByteArrayInputStream documentInput = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8.toString()));
+
+            File docxFile = new File(WordOpTools.class.getClassLoader().getResource("template.zip").getFile());
+            /*if(docxFile.exists()){
+                System.out.println(docxFile.getAbsolutePath());
+                return;
+            }
+            if(true){
+                System.out.println("fail to load file ");
+                return;
+            }*/
+            ZipFile zipFile = new ZipFile(docxFile);
+            Enumeration<? extends ZipEntry> zipEntrys = zipFile.entries();
+
+            int len = -1;
+            byte[] buffer = new byte[1024];
+            while (zipEntrys.hasMoreElements()) {
+                ZipEntry next = zipEntrys.nextElement();
+                zipout.putNextEntry(new ZipEntry(next.getName()));
+                InputStream zipInput = zipFile.getInputStream(next);
+                if ("word/document.xml".equals(next.getName())){
+                    while ((len = documentInput.read(buffer)) != -1) {
+                        zipout.write(buffer, 0, len);
+                    }
+                    documentInput.close();
+                }
+                else {
+                    while ((len = zipInput.read(buffer)) != -1) {
+                        zipout.write(buffer, 0, len);
+                    }
+                    zipInput.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void newDynamic(){
+        Map<String,Object> dataMap = prepareData();
+        Configuration config = new Configuration();
+        config.setDefaultEncoding(StandardCharsets.UTF_8.toString());
+        File file = new File("dynamicWord2.doc");
+        try(OutputStream fout = Files.newOutputStream(file.toPath());
+            Writer writer = new BufferedWriter(new OutputStreamWriter(fout));
+        ) {
+            //Template template = config.getTemplate("职位申请表.ftl",StandardCharsets.UTF_8.toString());
+            URL url = Thread.currentThread().getClass().getResource("/");
+            config.setDirectoryForTemplateLoading(new File(url.getFile().substring(1)));
+            Template template = config.getTemplate("newTemplate.ftl",StandardCharsets.UTF_8.toString());
+            template.process(dataMap,writer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Map<String, Object> prepareData(){
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
         String currentDate = format.format(now);
@@ -53,27 +134,23 @@ public class WordOpTools {
 
         Map<String,Object> map2 = new HashMap<>();
         map2.put("studentName","李四");
-        map2.put("alarmResultName","5");
+        map2.put("alarmResultName","1");
         map2.put("alarmYear","2018");
         map2.put("alarmTerm","第1");
         map2.put("collegeName","中文中文");
         map2.put("currentDate",currentDate);
         dataList.add(map2);
 
-        Configuration config = new Configuration();
-        config.setDefaultEncoding(StandardCharsets.UTF_8.toString());
-        File file = new File("dynamicWord2.doc");
-        try(OutputStream fout = Files.newOutputStream(file.toPath());
-            Writer writer = new BufferedWriter(new OutputStreamWriter(fout));
-        ) {
-            //Template template = config.getTemplate("职位申请表.ftl",StandardCharsets.UTF_8.toString());
-            URL url = Thread.currentThread().getClass().getResource("/");
-            config.setDirectoryForTemplateLoading(new File(url.getFile().substring(1)));
-            Template template = config.getTemplate("newTemplate.ftl",StandardCharsets.UTF_8.toString());
-            template.process(dataMap,writer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Map<String,Object> map3 = new HashMap<>();
+        map3.put("studentName","王五");
+        map3.put("alarmResultName","5");
+        map3.put("alarmYear","2018");
+        map3.put("alarmTerm","第1");
+        map3.put("collegeName","中文中文");
+        map3.put("currentDate",currentDate);
+        dataList.add(map3);
+
+        return dataMap;
     }
 
     private static void dynamicWrite(){
