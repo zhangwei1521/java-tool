@@ -1,10 +1,5 @@
 package com.zhangwei.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Student {
     private String stuNum;
     private String name;
@@ -12,6 +7,54 @@ public class Student {
     private String collegeName;
     private String grade;
     private String majorName;
+
+    public void setStuNum(String stuNum) {
+        this.stuNum = stuNum;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
+    }
+
+    public String getStuNum() {
+        return stuNum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public String getMajorName() {
+        return majorName;
+    }
 
     public Student(String stuNum, String name, Integer age, String collegeName, String grade, String majorName) {
         this.stuNum = stuNum;
