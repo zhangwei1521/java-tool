@@ -1,8 +1,5 @@
 package com.zhangwei.rabbitmq;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
@@ -12,13 +9,16 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 public class SimpleMessageConsumer {
 
 	private static final String QUEUE_NAME = "queue_demo";
-	private static final String IP_ADDRESS = "192.168.137.2";
+	private static final String IP_ADDRESS = "192.168.56.2";
 	private static final int PORT = 5672;
 	
-	public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
+	public static void consumeMessage() throws IOException, TimeoutException, InterruptedException {
 		Address[] addresses = new Address[] {new Address(IP_ADDRESS,PORT)};
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setUsername("admin");
