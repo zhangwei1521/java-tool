@@ -30,8 +30,7 @@ public class JsonTool {
 
     public static <T> List<T> getListFromJson(String json, Class<T> clazz){
         try {
-            List<Map<String, Object>> list = objectMapper.readValue(json, new TypeReference<List<T>>() {
-            });
+            List<Map<String, Object>> list = objectMapper.readValue(json, new TypeReference<List<T>>() {});
             List<T> result = new ArrayList<T>();
             for (Map<String, Object> map : list) {
                 result.add(map2pojo(map, clazz));
