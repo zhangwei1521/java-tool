@@ -32,9 +32,40 @@ import java.util.Map;
 
 public class ExcelUtils {
 
-    public static void main(String[] args) {
-        testStyle();
+    public static void main(String[] args) throws IOException {
+        //testStyle();
+        testMergeCell();
+    }
 
+    private static void testMergeCell() throws IOException {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+        sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
+        sheet.addMergedRegion(new CellRangeAddress(0,0,4,6));
+        Row row = sheet.createRow(0);
+        row.setHeight((short) 400);
+        Cell cell1 = row.createCell(0);
+        cell1.setCellValue("院系（单位盖章）：");
+        Cell cell2 = row.createCell(4);
+        cell2.setCellValue("打印日期：");
+
+        /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        workbook.write(byteArrayOutputStream);
+        byte[] bytesArray = byteArrayOutputStream.toByteArray();
+        byte[] buffer = new byte[1024];
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytesArray);
+        FileOutputStream outputStream = new FileOutputStream("d:/tem_file/test.xls");
+        int len = inputStream.read(buffer);
+        while (len != -1) {
+            outputStream.write(buffer, 0, len);
+            len = inputStream.read(buffer);
+        }*/
+
+        FileOutputStream outputStream = new FileOutputStream("d:/tem_file/test.xls");
+        workbook.write(outputStream);
+
+        outputStream.flush();
+        outputStream.close();
     }
 
     private static void testStyle(){
